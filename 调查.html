@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>用纸习惯调查</title>
+		<style>
+			body{
+				background-image:url("images/b.jpg");	
+				background-size: cover;
+				
+			}
+			.demo1{
+				font-size: 30px;
+				
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="demo1">
+		    <div class="tit"><a href="调查.html">用纸习惯调查</a></div>
+		    <div class="boxnav" style="height: 250px;">
+		        <form id="paperSurveyForm">
+		            <div class="form-group">
+		                <label for="dailyUsage">您每天大约使用多少张纸？</label>
+		                <input type="number" id="dailyUsage" min="0" required>
+		            </div>
+		            <div class="form-group">
+		                <label for="doubleSided">您是否经常双面打印？</label>
+		                <select id="doubleSided" required>
+		                    <option value="yes">是</option>
+		                    <option value="no">否</option>
+		                </select>
+		            </div>
+		            <div class="form-group">
+		                <label for="disposableUsage">您是否经常使用一次性纸制品（如纸杯、纸巾等）？</label>
+		                <select id="disposableUsage" required>
+		                    <option value="yes">是</option>
+		                    <option value="no">否</option>
+		                </select>
+		            </div>
+		            <button type="submit">提交</button>
+		        </form>
+		        <div id="surveyResult" style="display: none;"></div>
+		    </div>
+		</div>
+		
+		<script>
+		    // 保留时间显示功能
+		    var t = null;
+		    t = setTimeout(time, 1000);
+		    function time() {
+		        clearTimeout(t);
+		        dt = new Date();
+		        var y = dt.getFullYear();
+		        var mt = dt.getMonth() + 1;
+		        var day = dt.getDate();
+		        var h = dt.getHours();
+		        var m = dt.getMinutes();
+		        var s = dt.getSeconds();
+		        
+		        t = setTimeout(time, 1000);
+		    }
+		
+		    // 保留表单提交功能
+		    document.getElementById('paperSurveyForm').addEventListener('submit', function(e) {
+		        e.preventDefault();
+		        const dailyUsage = parseInt(document.getElementById('dailyUsage').value);
+		        const doubleSided = document.getElementById('doubleSided').value;
+		        const disposableUsage = document.getElementById('disposableUsage').value;
+		
+		        let wastedPaper = dailyUsage;
+		        if (doubleSided === 'yes') wastedPaper *= 0.5;
+		        if (disposableUsage === 'yes') wastedPaper *= 1.5;
+		
+		        const surveyResult = document.getElementById('surveyResult');
+		        surveyResult.innerHTML = `
+		            <h2>纸张浪费情况报告</h2>
+		            <div>对应的木材消耗量：${(wastedPaper * 0.001).toFixed(2)} 棵树/天</div>
+					<div>浪费的纸张数量：${wastedPaper.toFixed(0)} 张/天</div>
+		            <div>对应的二氧化碳排放量：${(wastedPaper * 0.01).toFixed(2)} 千克/天</div>
+		        `;
+		        surveyResult.style.display = 'block';
+		    });
+		</script>
+	</body>
+</html>

@@ -1,0 +1,338 @@
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>造纸术与纸张利用可视化分析</title>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<script type="text/javascript" src="js/china.js"></script>
+<script type="text/javascript" src="js/map.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+      body {
+            background-image: url('images/black.jpg'); /* 图片路径 */
+            background-size: cover; /* 使图片覆盖整个页面 */
+            background-position: center; /* 图片居中显示 */
+            background-repeat: no-repeat; /* 防止图片重复 */
+            background-attachment: fixed; /* 背景图片固定 */
+            margin: 0; /* 去除默认的外边距 */
+            padding: 0; /* 去除默认的内边距 */
+        }
+		.modal {
+		            display: none;
+		            position: fixed;
+		            z-index: 1;
+		            left: 0;
+		            top: 0;
+		            width: 100%;
+		            height: 100%;
+		            overflow: auto;
+		            background-color: rgb(0,0,0);
+		            background-color: rgba(0,0,0,0.9);
+		        }
+		        .modal-content {
+		            margin: 15% auto;
+		            display: block;
+		            width: 80%;
+		            max-width: 700px;
+		        }
+		        .close {
+		            color: white;
+		            float: right;
+		            font-size: 28px;
+		            font-weight: bold;
+		        }
+		        .close:hover,
+		        .close:focus {
+		            color: #bbb;
+		            text-decoration: none;
+		            cursor: pointer;
+		}
+</style>
+</head>
+<body>
+	<div class="head clearfix">
+	<h1 class="pulll_left">造纸术与纸张利用可视化分析</h1>
+		<div class="menu menu2 pulll_left">
+		<ul>      
+			<li><a href="#">纸张发明前的记录方式</a></li>
+			<li><a href="#">发展史</a></li>
+			<li><a href="#">蔡伦造纸术</a></li>
+			<li><a href="#">造纸产量</a></li>
+			<li><a href="#">消耗量</a></li>
+			<li><a href="#">原料占比</a></li>
+			<li><a href="调查.html">用纸习惯调查</a></li>
+		</ul>
+		</div>
+		<div class="time" id="showTime">2025/4</div>
+	</div>
+	 <script>
+	        function updateTime() {
+	            const now = new Date();
+	            const year = now.getFullYear();
+	            const month = String(now.getMonth() + 1).padStart(2, '0');
+	            const date = String(now.getDate()).padStart(2, '0');
+	            const hours = String(now.getHours()).padStart(2, '0');
+	            const minutes = String(now.getMinutes()).padStart(2, '0');
+	            const seconds = String(now.getSeconds()).padStart(2, '0');
+	            document.getElementById('showTime').textContent = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
+	        }
+
+	        setInterval(updateTime, 1000);
+	        updateTime(); // 初始化时间
+	    </script>
+	<div class="mainbox">
+	  <div class="box">
+	    <div class="tit">纸张发明前的记录方式</div>
+	    <button class="toggle-button">展开/收起</button>
+	    <div class="boxnav" id="prePaperRecording">
+	      <div class="recording-card">
+	      		            <h3 data-image="images/stone.jpg">石头</h3>
+	      		            <p>用途：用于记录重要的法律、法令、历史事件或宗教铭文。</p>
+	      		            <p>例子：古埃及金字塔铭文、石鼓文。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/泥板.jpg">泥板</h3>
+	      		            <p>用途：主要用于书写楔形文字，记录法律、经济交易、文学作品等。</p>
+	      		            <p>例子：苏美尔人、巴比伦人和亚述人广泛使用。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/金属.jpg">金属</h3>
+	      		            <p>用途：用于制作持久的铭文，尤其是纪念性或宗教性内容。</p>
+	      		            <p>例子：古代中国的青铜器铭文、古希腊和罗马的青铜牌匾。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/竹简和木牍.jpg">竹简和木牍</h3>
+	      		            <p>用途：主要用于书写文字，记录历史、法律、文学作品等。</p>
+	      		            <p>例子：古代中国的竹简和木牍。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/丝绸.jpg">丝绸和绢帛</h3>
+	      		            <p>用途：用于书写重要文件、绘画和宗教经文。</p>
+	      		            <p>例子：古代中国的丝绸和绢帛。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/羊皮纸.jpg">羊皮纸和小牛皮纸</h3>
+	      		            <p>用途：主要用于书写宗教文献、法律文件和重要著作。</p>
+	      		            <p>例子：中世纪欧洲的羊皮纸。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/草纸.jpg">纸莎草纸</h3>
+	      		            <p>用途：主要用于书写和绘画，是古埃及的主要书写材料。</p>
+	      		            <p>例子：古埃及的纸莎草纸。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/瓷器.jpg">陶器和陶片</h3>
+	      		            <p>用途：用于记录简单的信息，如标记物品的所有权、记录经济交易等。</p>
+	      		            <p>例子：古代希腊的陶片。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/龟骨.jpg">骨头和龟甲</h3>
+	      		            <p>用途：主要用于占卜和记录卜辞。</p>
+	      		            <p>例子：古代中国的甲骨文。</p>
+	      		        </div>
+	      		        <div class="recording-card">
+	      		            <h3 data-image="images/叶子.jpg">树叶</h3>
+	      		            <p>用途：用于书写宗教经文和文学作品。</p>
+	      		            <p>例子：印度和东南亚的贝叶经。</p>
+	      		        </div>
+	      		    </div>
+	      		</div>
+	      		<!-- 模态框 -->
+	      		<div id="myModal" class="modal">
+	      		    <div class="modal-content">
+	      		        <img id="modalImage" src="" alt="Image" style="width:100%">
+	      		        <span class="close">&times;</span>
+	      		    </div>
+	      		</div>
+		<script>
+				  document.addEventListener('DOMContentLoaded', function() {
+				    var toggleButton = document.querySelector('.toggle-button');
+				    var recordingSection = document.getElementById('prePaperRecording');
+				
+				    toggleButton.addEventListener('click', function() {
+				      if (recordingSection.style.display === 'none' || recordingSection.style.display === '') {
+				        recordingSection.style.display = 'flex';
+				        toggleButton.textContent = '收起';
+				      } else {
+				        recordingSection.style.display = 'none';
+				        toggleButton.textContent = '展开';
+				      }
+				    });
+		
+				    // 点击标题显示模态框
+				    var recordingCards = document.querySelectorAll('.recording-card h3');
+				    recordingCards.forEach(function(card) {
+				      card.addEventListener('click', function() {
+				        var imageUrl = card.getAttribute('data-image');
+				        document.getElementById('modalImage').src = imageUrl;
+				        document.getElementById('myModal').style.display = 'block';
+				      });
+				    });
+		
+				    // 关闭模态框
+				    var closeBtn = document.querySelector('.close');
+				    closeBtn.addEventListener('click', function() {
+				      document.getElementById('myModal').style.display = 'none';
+				    });
+		
+				    // 点击模态框外部关闭模态框
+				    window.addEventListener('click', function(event) {
+				      if (event.target == document.getElementById('myModal')) {
+				        document.getElementById('myModal').style.display = 'none';
+				      }
+				    });
+				  });
+				</script>
+			
+		<ul class="clearfix nav1">
+			<li style="width: 22%">
+				</script>
+					<div class="timeline-container">
+						<div class="tit">发展史</div>
+					  <div class="timeline">
+					    <div class="event" data-year="西汉时期" data-event="西汉时期，中国已经有了麻质纤维纸，但质地粗糙、数量少、成本高，不普及。"><a href="西汉.html">西汉时期</a></div>
+					    <div class="event" data-year="东汉时期" data-event="东汉元兴元年（公元105年），蔡伦改进了造纸术，用树皮、麻头、破布、鱼网等原料造纸，使纸的质量提高、成本降低，逐渐普遍使用。"><a href="东汉时期.html">东汉时期</a></div>
+					    <div class="event" data-year="魏晋南北朝时期" data-event="魏晋南北朝时期，开始利用桑皮、藤皮造纸，出现了活动帘床纸模，提高了工效，还出现了色纸、涂布纸、填料纸等加工纸。"><a href="魏晋南北朝时期.html">魏晋南北朝时期</a></div>
+					    <div class="event" data-year="隋唐时期" data-event="隋唐时期，造纸技术更为成熟，纸的质量更高、产量更大，雕版印刷术的发明也促进了造纸业的发展。"><a href="隋唐时期.html">隋唐时期</a></div>
+					    <div class="event" data-year="宋元时期" data-event="宋元时期，造纸术进入成熟阶段，竹纸和稻麦秆纸的发展标志着造纸史中的新纪元，造纸区域、纸的品种及加工技术进一步发展。"><a href="宋元时期.html">宋元时期</a></div>
+					    <div class="event" data-year="明清时期" data-event="明清时期，造纸技术集历史上的大成，纸的产量、质量、用途和产地都处于更高发展阶段，出现了大量优质纸张，如宣纸、宫廷纸等。"><a href="明清时期.html">明清时期</a></div>
+					    <div class="event" data-year="19世纪末" data-event="19世纪末，欧洲和美国的纸张制造业开始采用机械化制造纸张的方法，取代了传统的手工制纸技术。"><a href="19世纪末.html">19世纪末</a></div>
+					    <div class="event" data-year="20世纪" data-event="20世纪，出现了更加高效的造纸机械，如离心造纸机、平网造纸机、旋转刮板造纸机等，大大提高了纸张生产效率和质量。"><a href="20世纪.html">20世纪</a></div>
+					    <div class="event" data-year="1949年后" data-event="1949年后，中国逐渐引进以美国和欧洲为主的外国造纸技术，大规模引进机械、新材料、电子自动化等现代化技术和设备，同时利用绿色制浆和环保造纸的新技术，推进纸张生产的优化。"><a href="1949年后.html">1949年后</a></div>
+					    <div class="event" data-year="21世纪" data-event="21世纪，造纸技术朝着绿色、低碳、高效和智能化方向发展，采用先进的自动化控制系统，如DCS系统，对生产过程进行分散控制和集中管理，进一步提高生产效率和产品质量。"><a href="21世纪.html">21世纪</a></div>
+					  </div>
+					</div>
+					
+					<div class="event-details" id="eventDetails"></div>
+					<script>
+					  document.querySelectorAll('.event').forEach(event => {
+					    event.addEventListener('click', () => {
+					      const year = event.getAttribute('data-year');
+					      const eventDetails = event.getAttribute('data-event');
+					      document.getElementById('eventDetails').innerHTML = `
+					        <h3>${year}</h3>
+					        <p>${eventDetails}</p>
+					      `;
+					    });
+					  });
+					</script>
+				<div class="box">
+					<div class="tit">造纸产量</div>
+					<div class="boxnav" style="height: ;">
+						<div class="" style="height: 406px" id="echart2"></div>
+					</div>
+				</div>
+			</li>
+			<li style="width: 56%">
+							<div class="box">
+								<div class="boxnav mapc" style="height: 650px; position: relative">
+									<div class="map" id="map"></div>
+								</div>
+							</div>
+							<div class="box">
+							        <div class="tit">蔡伦造纸术</div>
+							        <div class="boxnav" style="height: 200px;" id="echart3"></div>
+							    </div>
+							    <div id="myModal" class="modal">
+							        <div class="modal-content">
+							            <img id="modalImage" src="" alt="Image" style="width:100%;">
+							            <span class="close">&times;</span>
+							        </div>
+							    </div>
+						</li>
+						<li style="width: 22%">
+							<div class="box">
+								<div class="tit">消耗量</div>
+								<div class="boxnav" id="echart4" style="height: 200px;">
+								</div>
+							</div>
+							
+							<div class="box">
+								<div class="tit">原料占比</div>
+								<div class="boxnav" style="height: 250px;" id="echart5">
+								</div>
+							</div>
+				<div class="box">
+					<div class="tit"><a href="调查.html">用纸习惯调查</a></div>
+					<div class="boxnav" style="height: 250px;">
+						<form id="paperSurveyForm">
+							<div class="form-group">
+								<label for="dailyUsage">您每天大约使用多少张纸？</label>
+								<input type="number" id="dailyUsage" min="0" required>
+							</div>
+							<div class="form-group">
+								<label for="doubleSided">您是否经常双面打印？</label>
+								<select id="doubleSided" required>
+									<option value="yes">是</option>
+									<option value="no">否</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="disposableUsage">您是否经常使用一次性纸制品（如纸杯、纸巾等）？</label>
+								<select id="disposableUsage" required>
+									<option value="yes">是</option>
+									<option value="no">否</option>
+								</select>
+							</div>
+							<button type="submit">提交</button>
+						</form>
+						<div id="surveyResult" style="display: none;"></div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script>
+		var t = null;
+		t = setTimeout(time, 1000); // 開始运行
+		function time() {
+			clearTimeout(t); // 清除定时器
+			dt = new Date();
+			var y = dt.getFullYear();
+			var mt = dt.getMonth() + 1;
+			var day = dt.getDate();
+			var h = dt.getHours(); // 获取时
+			var m = dt.getMinutes(); // 获取分
+			var s = dt.getSeconds(); // 获取秒
+			document.getElementById("showTime").innerHTML = y + "/" + mt + "/" + day + " " + h + ":" + m + ":" + s + "";
+			t = setTimeout(time, 1000); // 设定定时器，循环运行
+		}
+
+		document.getElementById('paperSurveyForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			// 获取用户输入
+			const dailyUsage = parseInt(document.getElementById('dailyUsage').value);
+			const doubleSided = document.getElementById('doubleSided').value;
+			const disposableUsage = document.getElementById('disposableUsage').value;
+			
+			// 计算纸张浪费
+			let wastedPaper = dailyUsage;
+			if (doubleSided === 'yes') {
+				wastedPaper *= 0.5; // 双面打印减少浪费
+			}
+			if (disposableUsage === 'yes') {
+				wastedPaper *= 1.5; // 使用一次性纸制品增加浪费
+			}
+			
+			// 计算木材消耗和二氧化碳排放
+			const woodConsumption = wastedPaper * 0.001; // 每张纸约消耗0.001棵树木
+			const co2Emission = wastedPaper * 0.01; // 每张纸生产约排放0.01千克二氧化碳
+			
+			// 显示结果
+			const surveyResult = document.getElementById('surveyResult');
+			surveyResult.innerHTML = `
+				<h2>纸张浪费情况报告</h2>
+				<div>浪费的纸张数量：${wastedPaper.toFixed(0)} 张/天</div>
+				<div>对应的木材消耗量：${woodConsumption.toFixed(2)} 棵树/天</div>
+				<div>对应的二氧化碳排放量：${co2Emission.toFixed(2)} 千克/天</div>
+			`;
+			surveyResult.style.display = 'block';
+		});
+	</script>
+</body>
+</html>
